@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("OutlookTools")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Change the Message Class of Outlook Contacts")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Kraft Software, LLC")]
 [assembly: AssemblyProduct("OutlookTools")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
