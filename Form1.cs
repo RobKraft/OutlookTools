@@ -18,9 +18,8 @@ namespace OutlookTools
 		public Form1()
 		{
 			InitializeComponent();
-			GetMessageClasses();
 		}
-		private List<MyContact> GetMessageClasses()
+		private void GetMessageClasses()
 		{
 			var contacts = new List<MyContact>();
 			Dictionary<string, int> msgClasses = new Dictionary<string, int>();
@@ -46,17 +45,36 @@ namespace OutlookTools
 					contact.Address = contactItem.BusinessAddress;
 					contact.MessageClass = contactItem.MessageClass;
 					contacts.Add(contact);
+					UpdateProgressMessageOnUI("Loading " + contact.FirstName + " " + contact.LastName);
+				
 				}
 			}
-			dataGridView1.Columns.Add("MessageClass", "Message Class");
-			dataGridView1.Columns.Add("Number", "Number of Contacts with this Class");
-			foreach (var item in msgClasses)
+			UpdateUI(msgClasses);
+		}
+		public void UpdateProgressMessageOnUI(string message)
+		{
+			Action del = delegate
 			{
-				dataGridView1.Rows.Add(item.Key, item.Value);
-				comboBox1.Items.Add(item.Key);
-				comboBox1.SelectedIndex = 0;
-			}
-			return contacts;
+				label1.Text = message;
+			};
+			Invoke(del);
+			Application.DoEvents();
+		}
+		public void UpdateUI(Dictionary<string, int> msgClasses)
+		{
+			Action del = delegate
+			{
+				dataGridView1.Columns.Add("MessageClass", "Message Class");
+				dataGridView1.Columns.Add("Number", "Number of Contacts with this Class");
+				foreach (var item in msgClasses)
+				{
+					dataGridView1.Rows.Add(item.Key, item.Value);
+					comboBox1.Items.Add(item.Key);
+					comboBox1.SelectedIndex = 0;
+				}
+			};
+			Invoke(del);
+			Application.DoEvents();
 		}
 		private void button1_Click(object sender, EventArgs e)
 		{
@@ -78,6 +96,25 @@ namespace OutlookTools
 				}
 			}
 		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			backgroundWorker1.RunWorkerAsync();
+		}
+		private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+		{
+			GetMessageClasses();
+		}
+		private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			//Application.DoEvents();
+
+			label1.Text = "";
+			button1.Enabled = true;
+			comboBox1.Enabled = true;
+		}
+
+
 	}
 	public class MyContact
 	{
