@@ -121,6 +121,6 @@
     <value>17, 17</value>
   </metadata>
   <data name="textBox1.Text" xml:space="preserve">
-    <value>The Message Class determines the form used to display a contact.  Outlook assigns a message class to a contact when the contact is created, but does not provide a way to change the message class (and thus the form used to display it) for existing contacts.</value>
+    <value>The Message Class partially determines the form used to display a contact.  Outlook assigns a message class to a contact when the contact is created, but does not provide a way to change the message class (and thus the form used to display it) for existing contacts.</value>
   </data>
 </root>
