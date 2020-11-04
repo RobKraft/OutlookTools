@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 using OutLook = Microsoft.Office.Interop.Outlook;
 //https://www.slipstick.com/developer/vba-set-existing-contacts-custom-form/
@@ -17,11 +18,34 @@ namespace OutlookTools
 		List<IOutlookTask> _tasks = new List<IOutlookTask>();
 		OutlookMessageType _selectedOutlookType = OutlookMessageType.Contact;
 		private List<IOutlookUIInfo> _propertyMaps = new List<IOutlookUIInfo>();
+		private string userAccounts = "";
 		#endregion
 
 		#region PatternCompleted NeedsSimpleChanges
 		private OutLook.MAPIFolder GetFolderForType(OutlookMessageType messageType)
 		{
+			OutLook.Stores stores = null;
+			try
+			{
+				stores = _outlookObj.Session.Stores;
+			}
+			catch ( Exception ex)
+			{
+				//https://stackoverflow.com/questions/18373260/outlook-interop-exception
+				userAccounts = ex.Message + " " + ex.InnerException + Environment.NewLine + Environment.NewLine;
+			}
+			foreach (OutLook.Store store in stores)
+			{
+				var c = store.GetDefaultFolder(OutLook.OlDefaultFolders.olFolderContacts);
+				//Console.WriteLine(c.Items.Count.ToString() + " contacts in " + store.DisplayName + " for " + store.FilePath);
+				userAccounts += c.Items.Count.ToString() + " contacts in " + store.DisplayName + " for " + store.FilePath + Environment.NewLine;
+				userAccounts += Environment.NewLine;
+			}
+			var accounts = _outlookObj.Session.Accounts;
+			foreach (OutLook.Account account in accounts)
+			{
+				Console.WriteLine(account.DisplayName);
+			}
 			switch (messageType)
 			{
 				case OutlookMessageType.Contact:
@@ -121,7 +145,7 @@ namespace OutlookTools
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			SetupPropertyMaps();
-			comboBox2.SelectedIndex = 1; //1 defaults to Task
+			comboBox2.SelectedIndex = 1; //1 defaults to Task - this triggers an event!
 			dataGridView1.Columns.Add("MessageClass", "Message Class");
 			dataGridView1.Columns.Add("Number", "Number of " + _selectedOutlookType.ToString() + "s with this Class");
 		}
@@ -157,6 +181,7 @@ namespace OutlookTools
 					comboBox1.SelectedIndex = 0;
 				}
 				SetDataSourceOfGrid();
+				textBox2.Text = userAccounts;
 			};
 			Invoke(del);
 			System.Windows.Forms.Application.DoEvents();
@@ -238,6 +263,7 @@ namespace OutlookTools
 		#region Messy Code that needs work
 		private void UpdateOutlookItemMessageClassContact(string desiredMessageClass, bool selected = false)
 		{
+			//This line is a safeguard to prevent changing all contacts to IPM.Task
 			if (desiredMessageClass.Equals("IPM.Task", StringComparison.OrdinalIgnoreCase))
 				return;
 			IOutlookContact selectedItem = null;
@@ -274,6 +300,7 @@ namespace OutlookTools
 
 		private void UpdateOutlookItemMessageClassTask(string desiredMessageClass, bool selected = false)
 		{
+			//This line is a safeguard to prevent changing all tasks to IPM.Contact
 			if (desiredMessageClass.Equals("IPM.Contact", StringComparison.OrdinalIgnoreCase))
 				return;
 			IOutlookTask selectedItem = null;

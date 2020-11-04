@@ -38,6 +38,7 @@
 			this.dataGridView2 = new System.Windows.Forms.DataGridView();
 			this.button2 = new System.Windows.Forms.Button();
 			this.comboBox2 = new System.Windows.Forms.ComboBox();
+			this.textBox2 = new System.Windows.Forms.TextBox();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
 			this.SuspendLayout();
@@ -138,18 +139,29 @@
 			this.comboBox2.Items.AddRange(new object[] {
             "Contacts",
             "Tasks"});
-			this.comboBox2.Location = new System.Drawing.Point(1421, 133);
+			this.comboBox2.Location = new System.Drawing.Point(1418, 71);
 			this.comboBox2.Name = "comboBox2";
 			this.comboBox2.Size = new System.Drawing.Size(303, 45);
 			this.comboBox2.TabIndex = 7;
 			this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+			// 
+			// textBox2
+			// 
+			this.textBox2.Location = new System.Drawing.Point(1418, 145);
+			this.textBox2.Multiline = true;
+			this.textBox2.Name = "textBox2";
+			this.textBox2.ReadOnly = true;
+			this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.textBox2.Size = new System.Drawing.Size(766, 242);
+			this.textBox2.TabIndex = 8;
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(19F, 37F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
-			this.ClientSize = new System.Drawing.Size(1783, 1106);
+			this.ClientSize = new System.Drawing.Size(2224, 1106);
+			this.Controls.Add(this.textBox2);
 			this.Controls.Add(this.comboBox2);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.dataGridView2);
@@ -179,6 +191,7 @@
 		private System.Windows.Forms.DataGridView dataGridView2;
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.ComboBox comboBox2;
+		private System.Windows.Forms.TextBox textBox2;
 	}
 }
 
